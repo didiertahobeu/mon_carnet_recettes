@@ -6,19 +6,43 @@ function Home({ recipes }) {
   const [filterText, setFilterText] = useState('');
   const [filteredRecipes, setFilteredRecipes] = useState(recipes);
 
-  const handleFilter = (value)=>{
-    setFilteredRecipes(recipes.filter(recipe =>
+  /* const handleFilter = (value)=>{
+    setFilteredRecipes(value ? recipes.filter(recipe =>
       recipe.title.toLowerCase().includes(value.toLowerCase())
-    ));
-  }
+    ): recipes);
+  } */
+
+  useEffect(()=>{
+    /* if (filterText) {
+      setFilteredRecipes(recipes.filter(recipe =>
+        recipe.title.toLowerCase().includes(filterText.toLowerCase())
+      ));
+    }
+      else{
+      setFilteredRecipes(recipes);
+      } */
+
+      setFilteredRecipes(filterText ? recipes.filter(recipe =>
+        recipe.title.toLowerCase().includes(filterText.toLowerCase())
+      ): recipes);
+  }, [filterText, recipes])
+
 
   return (
     <div style={{ padding: '20px' }}>
       
-        <input
+        {/* <input
           type="text"
           placeholder="Filtrer les recettes par titre"
           onChange={e=>{handleFilter(e.target.value)}}
+          required
+          style={{ marginBottom: '20px', padding: '8px', width: '100%' }}
+        /> */}
+
+        <input
+          type="text"
+          placeholder="Filtrer les recettes par titre"
+          onChange={e=>{setFilterText(e.target.value)}}
           required
           style={{ marginBottom: '20px', padding: '8px', width: '100%' }}
         />
