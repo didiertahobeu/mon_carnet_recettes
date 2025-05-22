@@ -1,24 +1,44 @@
-import logo from './logo.svg';
+
+import React from 'react';
 import './App.css';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import RecipeCard from './components/RecipeCard';
 
 function App() {
+  const recipes = [
+    {
+      title: "Tarte aux pommes",
+      image: "https://placehold.co/600x400/orange/white?text=Tarte+aux+pommes",
+      ingredients: ["Pommes", "Pâte", "Sucre", "Cannelle"]
+    },
+    {
+      title: "Quiche Lorraine",
+      image: "https://placehold.co/600x400/green/white?text=Quiche+Lorraine",
+      ingredients: ["Pâte brisée", "Lardons", "Œufs", "Crème fraîche"]
+    },
+    {
+      title: "Salade Niçoise",
+      image: "https://placehold.co/600x400/pink/white?text=Salade+Nicoise",
+      ingredients: ["Tomates", "Œufs durs", "Olives", "Thon", "Haricots verts"]
+    }
+  ];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header  />
+      <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
+        {recipes.map((recipe, index) => (
+          <RecipeCard 
+            key={index}
+            title={recipe.title}
+            image={recipe.image}
+            ingredients={recipe.ingredients}
+          />
+        ))}
+      </div>
+      <Footer />
+    </>
   );
 }
 

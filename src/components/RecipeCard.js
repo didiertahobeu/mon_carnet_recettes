@@ -6,7 +6,7 @@ function RecipeCard({ title, image, ingredients }) {
     <div className="recipe-card" style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '16px', maxWidth: '300px' }}>
       <img src={image} alt={formatTitle(title)} style={{ width: '100%', borderRadius: '8px' }} />
       <h2>{formatTitle(title)}</h2>
-      <h3>Ingredients {ingredients.length}:</h3>
+      <h3>Ingredients ({ingredients.length}):</h3>
       <ul>
         {ingredients.map((ingredient, index) => (
           <li key={index}>{ingredient}</li>
