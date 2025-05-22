@@ -34,7 +34,9 @@ function App() {
             title={recipe.title}
             image={recipe.image}
             ingredients={recipe.ingredients}
-          />
+            >
+            <button>Voir la recette</button>
+          </RecipeCard>
         ))}
       </div>
       <Footer />
