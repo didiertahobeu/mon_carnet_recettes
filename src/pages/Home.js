@@ -39,13 +39,13 @@ function Home({ recipes }) {
           style={{ marginBottom: '20px', padding: '8px', width: '100%' }}
         /> */}
 
-        <input
+        {/* <input
           type="text"
           placeholder="Filtrer les recettes par titre"
           onChange={e=>{setFilterText(e.target.value)}}
           required
           style={{ marginBottom: '20px', padding: '8px', width: '100%' }}
-        />
+        /> */}
     
       <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '20px' }}>
         {filteredRecipes.map((recipe) => (

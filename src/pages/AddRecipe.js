@@ -1,18 +1,24 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function AddRecipe({ recipes, setRecipes }) {
+function AddRecipe({ recipes, setRecipesChild }) {
+
   const titleRef = useRef(null);
   const imageRef = useRef(null);
   const ingredientInputRef = useRef(null);
+
   const [ingredients, setIngredients] = useState([]);
+
   const [errors, setErrors] = useState({ title: false, image: false, ingredients: false });
+  
   const navigate = useNavigate();
 
   const handleAddIngredient = () => {
     const trimmed = ingredientInputRef.current.value.trim();
     if (trimmed && !ingredients.includes(trimmed)) {
+
       setIngredients([...ingredients, trimmed]);
+      
       ingredientInputRef.current.value = '';
       ingredientInputRef.current.focus();
       setErrors(prev => ({ ...prev, ingredients: false }));
@@ -28,6 +34,7 @@ function AddRecipe({ recipes, setRecipes }) {
       image: !image,
       ingredients: ingredients.length === 0,
     };
+
     setErrors(newErrors);
 
     if (newErrors.title || newErrors.image || newErrors.ingredients) {
@@ -40,7 +47,7 @@ function AddRecipe({ recipes, setRecipes }) {
       image: image + '?text='+title,
       ingredients,
     };
-    setRecipes([...recipes, newRecipe]);
+    setRecipesChild([...recipes, newRecipe]);
     navigate('/');
   };
 
