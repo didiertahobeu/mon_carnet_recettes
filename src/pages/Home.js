@@ -1,34 +1,28 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import RecipeCard from '../components/RecipeCard';
 
 function Home({ recipes }) {
   const [filterText, setFilterText] = useState('');
-  const inputRef = useRef(null);
+  const [filteredRecipes, setFilteredRecipes] = useState(recipes);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (inputRef.current) {
-      setFilterText(inputRef.current.value);
-    }
-  };
-
-  const filteredRecipes = recipes.filter(recipe =>
-    recipe.title.toLowerCase().includes(filterText.toLowerCase())
-  );
+  const handleFilter = (value)=>{
+    setFilteredRecipes(recipes.filter(recipe =>
+      recipe.title.toLowerCase().includes(value.toLowerCase())
+    ));
+  }
 
   return (
     <div style={{ padding: '20px' }}>
-      <form onSubmit={handleSubmit}>
+      
         <input
           type="text"
           placeholder="Filtrer les recettes par titre"
-          ref={inputRef}
+          onChange={e=>{handleFilter(e.target.value)}}
           required
           style={{ marginBottom: '20px', padding: '8px', width: '100%' }}
         />
-        <button type="submit" style={{ marginBottom: '20px' }}>Filtrer</button>
-      </form>
+    
       <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '20px' }}>
         {filteredRecipes.map((recipe) => (
           <RecipeCard 
