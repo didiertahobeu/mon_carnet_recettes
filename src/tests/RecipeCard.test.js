@@ -1,8 +1,8 @@
 // Tests pour le composant RecipeCard
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import RecipeCard from './RecipeCard';
-import ToggleIngredients from './ToggleIngredients';
+import RecipeCard from '../components/RecipeCard';
+import ToggleIngredients from '../components/ToggleIngredients';
 import { useDispatch } from 'react-redux';
 import { addToFavorite } from '../store/recipesSlice';
 

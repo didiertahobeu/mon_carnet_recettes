@@ -1,6 +1,6 @@
 // Tests pour le hook useLocalStorage
 import { renderHook, act } from '@testing-library/react-hooks';
-import useLocalStorage from './useLocalStorage';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 describe('useLocalStorage', () => {
   const key = 'testKey';

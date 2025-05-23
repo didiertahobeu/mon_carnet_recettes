@@ -1,5 +1,5 @@
 // Tests pour la fonction formatTitle dans utils/formatter.js
-import { formatTitle } from './formatter';
+import { formatTitle } from '../utils/formatter';
 
 describe('formatTitle', () => {
   // Teste que la première lettre est en majuscule et le reste en minuscules
