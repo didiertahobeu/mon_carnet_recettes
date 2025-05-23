@@ -1,24 +1,22 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addRecipe } from '../store/actions';
 
-function AddRecipe({ recipes, setRecipesChild }) {
-
+function AddRecipe() {
   const titleRef = useRef(null);
   const imageRef = useRef(null);
   const ingredientInputRef = useRef(null);
 
   const [ingredients, setIngredients] = useState([]);
-
   const [errors, setErrors] = useState({ title: false, image: false, ingredients: false });
-  
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleAddIngredient = () => {
     const trimmed = ingredientInputRef.current.value.trim();
     if (trimmed && !ingredients.includes(trimmed)) {
-
       setIngredients([...ingredients, trimmed]);
-      
       ingredientInputRef.current.value = '';
       ingredientInputRef.current.focus();
       setErrors(prev => ({ ...prev, ingredients: false }));
@@ -44,10 +42,11 @@ function AddRecipe({ recipes, setRecipesChild }) {
     const newRecipe = {
       id: Date.now().toString(),
       title,
-      image: image + '?text='+title,
+      image: image + '?text=' + title,
       ingredients,
     };
-    setRecipesChild([...recipes, newRecipe]);
+
+    dispatch(addRecipe(newRecipe));
     navigate('/');
   };
 
