@@ -14,10 +14,12 @@ function RecipeDetail() {
   const { id } = useParams();
 
   // Récupération des données de la recette via le hook personnalisé
-  const { data: recipe, isLoading, isError } = useGetRecipeById(id);
+  const { data: recipe, isLoading: isLoadingRecip, isError } = useGetRecipeById(id);
+
+  
 
   // Affichage pendant le chargement
-  if (isLoading) {
+  if (isLoadingRecip) {
     return <div>Chargement de la recette...</div>;
   }
 

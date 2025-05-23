@@ -32,9 +32,11 @@ export function useGetRecipeById(id) {
 export function useCreateRecipe() {
   const queryClient = useQueryClient();
   return useMutation(recipesService.createRecipe, {
+
     onSuccess: () => {
       queryClient.invalidateQueries(['recipes']);
     },
+    
   });
 }
 

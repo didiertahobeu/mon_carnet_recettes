@@ -18,6 +18,7 @@ function AddRecipe() {
   const {
     register,
     control,
+    form,
     handleSubmit,
     reset,
     formState: { errors },
@@ -34,6 +35,7 @@ function AddRecipe() {
     control,
     name: 'ingredients',
   });
+  const {mutate: addRecipe} = useCreateRecipe();
 
   const onSubmit = (data) => {
     const newRecipe = {
@@ -42,18 +44,28 @@ function AddRecipe() {
       ingredients: data.ingredients.filter((ing) => ing.trim() !== ''),
     };
 
+    addRecipe(newRecipe).then(() => {
+      reset();
+      navigate('/');
+    }
+    );
+
     createRecipeMutation.mutate(newRecipe, {
       onSuccess: () => {
         reset();
         navigate('/');
       },
     });
+    createRecipeMutation.isLoading && <p>Création de la recette...</p>;
+    createRecipeMutation.isError && <p>Erreur lors de la création de la recette.</p>;
+    createRecipeMutation.isSuccess && <p>Recette créée avec succès !</p>;
+    createRecipeMutation.isPending && <p>En cours</p>;
   };
 
   return (
     <div style={{ padding: '20px' }}>
       <h2>Ajouter une nouvelle recette</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form {... form} onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label>
             Titre:
