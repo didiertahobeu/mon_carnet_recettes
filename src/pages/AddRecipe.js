@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { addRecipe } from '../store/actions';
+import { addRecipe } from '../store/recipesSlice';
 
 function AddRecipe() {
   const titleRef = useRef(null);
@@ -11,6 +11,8 @@ function AddRecipe() {
   const [ingredients, setIngredients] = useState([]);
   const [errors, setErrors] = useState({ title: false, image: false, ingredients: false });
   const navigate = useNavigate();
+
+  // Use Redux dispatch to add a recipe
   const dispatch = useDispatch();
 
   const handleAddIngredient = () => {
@@ -46,7 +48,12 @@ function AddRecipe() {
       ingredients,
     };
 
+    // Ajout de la recette à la liste des recettes
+    // On utilise le dispatch pour ajouter la recette via la métode addRecipe importée de recipesSlice
     dispatch(addRecipe(newRecipe));
+
+// dispatch(addToFavorite(newRecipe.id)) si on veut ajouter la recette aux favoris;
+
     navigate('/');
   };
 

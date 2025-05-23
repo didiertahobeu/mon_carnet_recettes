@@ -1,9 +1,11 @@
-import { createStore } from 'redux';
-import { recipesReducer } from './reducers';
+import { configureStore } from '@reduxjs/toolkit';
+import recipesReducer from './recipesSlice';
 
-const store = createStore(
-  recipesReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+const store = configureStore({
+  reducer: {
+    recipes: recipesReducer,
+  },
+  devTools: process.env.NODE_ENV !== 'production',
+});
 
 export default store;

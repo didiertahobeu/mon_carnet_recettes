@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { formatTitle } from '../utils/formatter';
 
 import ToggleIngredients from './ToggleIngredients';
-import { addToFavorite } from '../store/actions';
+import { addToFavorite } from '../store/recipesSlice';
+// import { addToFavorite } from '../store/actions';
 
 function RecipeCard({recipe,  children }) {
   const dispatch = useDispatch();
