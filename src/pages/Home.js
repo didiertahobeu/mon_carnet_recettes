@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import useLocalStorage from '../hooks/useLocalStorage';
 import RecipeCard from '../components/RecipeCard';
 
 function Home() {
-  const recipes = useSelector(state => state.recipes);
-  const [filterText, setFilterText] = useState('');
+  const [recipes] = useLocalStorage('recipes');
+  const [filterText, setFilterText] = useLocalStorage('filterText', '');
   const [filteredRecipes, setFilteredRecipes] = useState(recipes);
 
   useEffect(() => {
@@ -16,10 +16,10 @@ function Home() {
 
   return (
     <div style={{ padding: '20px' }}>
-      {/* Uncomment to enable filtering input */}
       <input
         type="text"
         placeholder="Filtrer les recettes par titre"
+        value={filterText}
         onChange={e => setFilterText(e.target.value)}
         required
         style={{ marginBottom: '20px', padding: '8px', width: '100%' }}

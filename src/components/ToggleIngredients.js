@@ -29,7 +29,7 @@ function ToggleIngredients({ ingredients }) {
      
       {isVisible && (
         <>
-        <h2> Ingredients </h2>
+        <h2> Ingrédients </h2>
         <ul id="ingredients-list" style={{ paddingLeft: '20px' }}>
           {ingredients.map((ingredient, index) => (
             <li key={index}>{ingredient}</li>

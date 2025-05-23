@@ -16,7 +16,7 @@ function RecipeDetail() {
         <p>Recette ID: {recipe.id}</p>
         <p>Recette NOM: {formatTitle(recipe?.title)}</p>
       
-        <h3>Ingredients ({recipe.ingredients.length}):</h3>
+        <h3>Ingrédients ({recipe.ingredients.length}):</h3>
         <ul>
             {recipe.ingredients.map((ingredient, index) => (
                 <li key={index}>{ingredient}</li>

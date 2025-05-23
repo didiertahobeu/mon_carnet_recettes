@@ -1,15 +1,22 @@
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { formatTitle } from '../utils/formatter';
-
+import useLocalStorage from '../hooks/useLocalStorage';
 import ToggleIngredients from './ToggleIngredients';
-import { addToFavorite } from '../store/actions';
 
-function RecipeCard({recipe,  children }) {
-  const dispatch = useDispatch();
+function RecipeCard({ recipe, children }) {
+  const [recipes, setRecipes] = useLocalStorage('recipes');
+  const [isFavorite, setIsFavorite] = useState(recipe.isFavorite);
 
   const toggleFavorite = () => {
-    dispatch(addToFavorite(recipe.id));
+    const updatedFavorite = !isFavorite;
+    setIsFavorite(updatedFavorite);
+
+    // Update the recipes in localStorage
+    const updatedRecipes = recipes.map(r =>
+      r.id === recipe.id ? { ...r, isFavorite: updatedFavorite } : r
+    );
+    setRecipes(updatedRecipes);
   };
 
   return (
@@ -20,13 +27,13 @@ function RecipeCard({recipe,  children }) {
       <div style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }} className="recipe-card__footer">
         <button
           onClick={toggleFavorite}
-          aria-label={recipe.isFavorite ? "Remove from favorites" : "Add to favorites"}
+          aria-label={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
           style={{
             background: 'none',
             border: 'none',
             cursor: 'pointer',
             fontSize: '24px',
-            color: recipe.isFavorite ? 'red' : 'gray',
+            color: isFavorite ? 'red' : 'gray',
             padding: 0,
             marginRight: '8px',
           }}

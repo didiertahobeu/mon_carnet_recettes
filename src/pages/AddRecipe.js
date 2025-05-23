@@ -1,17 +1,28 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { addRecipe } from '../store/actions';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 function AddRecipe() {
   const titleRef = useRef(null);
   const imageRef = useRef(null);
   const ingredientInputRef = useRef(null);
 
+  const [recipes, setRecipes] = useLocalStorage('recipes');
   const [ingredients, setIngredients] = useState([]);
   const [errors, setErrors] = useState({ title: false, image: false, ingredients: false });
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Optionally, persist ingredients in localStorage as well
+    const savedIngredients = window.localStorage.getItem('addRecipeIngredients');
+    if (savedIngredients) {
+      setIngredients(JSON.parse(savedIngredients));
+    }
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem('addRecipeIngredients', JSON.stringify(ingredients));
+  }, [ingredients]);
 
   const handleAddIngredient = () => {
     const trimmed = ingredientInputRef.current.value.trim();
@@ -44,9 +55,11 @@ function AddRecipe() {
       title,
       image: image + '?text=' + title,
       ingredients,
+      isFavorite: false,
     };
 
-    dispatch(addRecipe(newRecipe));
+    setRecipes([...recipes, newRecipe]);
+    window.localStorage.removeItem('addRecipeIngredients');
     navigate('/');
   };
 
