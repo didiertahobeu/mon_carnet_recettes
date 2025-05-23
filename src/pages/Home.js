@@ -4,11 +4,17 @@ import useLocalStorage from '../hooks/useLocalStorage';
 import RecipeCard from '../components/RecipeCard';
 
 function Home() {
+
   const [recipes] = useLocalStorage('recipes');
+
+
   const [filterText, setFilterText] = useLocalStorage('filterText', '');
+  
   const [filteredRecipes, setFilteredRecipes] = useState(recipes);
 
   useEffect(() => {
+    console.log(recipes);
+    
     setFilteredRecipes(filterText ? recipes.filter(recipe =>
       recipe.title.toLowerCase().includes(filterText.toLowerCase())
     ) : recipes);

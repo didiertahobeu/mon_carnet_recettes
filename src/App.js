@@ -6,13 +6,11 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import RecipeDetail from './pages/RecipeDetail';
 import AddRecipe from './pages/AddRecipe';
-import RecipesPersistence from './components/RecipesPersistence';
 
 function App() {
   return (
     <>
       <Header />
-      <RecipesPersistence />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/recipe/:id" element={<RecipeDetail />} />

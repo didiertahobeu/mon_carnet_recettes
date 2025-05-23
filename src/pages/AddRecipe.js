@@ -8,6 +8,7 @@ function AddRecipe() {
   const ingredientInputRef = useRef(null);
 
   const [recipes, setRecipes] = useLocalStorage('recipes');
+
   const [ingredients, setIngredients] = useState([]);
   const [errors, setErrors] = useState({ title: false, image: false, ingredients: false });
   const navigate = useNavigate();
@@ -59,6 +60,9 @@ function AddRecipe() {
     };
 
     setRecipes([...recipes, newRecipe]);
+
+  localStorage.clear()
+  
     window.localStorage.removeItem('addRecipeIngredients');
     navigate('/');
   };

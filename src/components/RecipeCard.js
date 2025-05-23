@@ -16,6 +16,7 @@ function RecipeCard({ recipe, children }) {
     const updatedRecipes = recipes.map(r =>
       r.id === recipe.id ? { ...r, isFavorite: updatedFavorite } : r
     );
+    
     setRecipes(updatedRecipes);
   };
 
