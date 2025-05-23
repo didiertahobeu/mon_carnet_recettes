@@ -6,7 +6,7 @@ import RecipeCard from '../components/RecipeCard';
 function Home() {
   
   // On utilise le hook useSelector pour accéder à l'état des recettes dans le store Redux
-  const recipes = useSelector(state => state.recipes.recipes);
+  const recipes = useSelector(state => state.recipes.recettes);
 
   const [filterText, setFilterText] = useState('');
   const [filteredRecipes, setFilteredRecipes] = useState(recipes);

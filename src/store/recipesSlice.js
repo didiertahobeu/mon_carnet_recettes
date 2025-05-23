@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { recipes } from '../datas/recipesList';
 
 const initialState = {
-  recipes: recipes,
+  recettes: recipes,
 };
 
 const recipesSlice = createSlice({
@@ -10,10 +10,10 @@ const recipesSlice = createSlice({
   initialState,
   reducers: {
     addRecipe(state, action) {
-      state.recipes.push(action.payload);
+      state.recettes.push(action.payload);
     },
     addToFavorite(state, action) {
-      const recipe = state.recipes.find(r => r.id === action.payload);
+      const recipe = state.recettes.find(r => r.id === action.payload);
       if (recipe) {
         recipe.isFavorite = !recipe.isFavorite;
       }
@@ -22,4 +22,5 @@ const recipesSlice = createSlice({
 });
 
 export const { addRecipe, addToFavorite } = recipesSlice.actions;
+
 export default recipesSlice.reducer;

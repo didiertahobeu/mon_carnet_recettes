@@ -54,7 +54,7 @@ function AddRecipe() {
 
 // dispatch(addToFavorite(newRecipe.id)) si on veut ajouter la recette aux favoris;
 
-    navigate('/');
+    // navigate('/');
   };
 
   const inputStyle = (hasError) => ({
