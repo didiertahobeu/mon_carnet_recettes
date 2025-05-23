@@ -7,123 +7,95 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCreateRecipe } from '../../hooks/Api/useRecipesApi';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import recipeSchema from '../../validators';
 
 function AddRecipe() {
-  // Références pour accéder aux champs du formulaire
-  const titleRef = useRef(null);
-  const imageRef = useRef(null);
-  const ingredientInputRef = useRef(null);
-
-  // État local pour gérer la liste des ingrédients et les erreurs de validation
-  const [ingredients, setIngredients] = useState([]);
-  const [errors, setErrors] = useState({ title: false, image: false, ingredients: false });
   const navigate = useNavigate();
-
-  // Hook de mutation pour créer une recette via l'API
   const createRecipeMutation = useCreateRecipe();
 
-  // Ajoute un ingrédient à la liste si non vide et non dupliqué
-  const handleAddIngredient = () => {
-    const trimmed = ingredientInputRef.current.value.trim();
-    if (trimmed && !ingredients.includes(trimmed)) {
-      setIngredients([...ingredients, trimmed]);
-      ingredientInputRef.current.value = '';
-      ingredientInputRef.current.focus();
-      setErrors(prev => ({ ...prev, ingredients: false }));
-    }
-  };
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(recipeSchema),
+    defaultValues: {
+      title: '',
+      image: '',
+      ingredients: [''],
+    },
+  });
 
-  // Gestion de la soumission du formulaire
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const title = titleRef.current.value.trim();
-    const image = imageRef.current.value.trim();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'ingredients',
+  });
 
-    // Validation des champs
-    const newErrors = {
-      title: !title,
-      image: !image,
-      ingredients: ingredients.length === 0,
-    };
-
-    setErrors(newErrors);
-
-    // Si erreurs, ne pas soumettre
-    if (newErrors.title || newErrors.image || newErrors.ingredients) {
-      return;
-    }
-
-    // Préparation de la nouvelle recette
+  const onSubmit = (data) => {
     const newRecipe = {
-      title,
-      image: image + '?text=' + title,
-      ingredients,
+      title: data.title,
+      image: data.image + '?text=' + data.title,
+      ingredients: data.ingredients.filter((ing) => ing.trim() !== ''),
     };
 
-    // Envoi de la mutation pour créer la recette
     createRecipeMutation.mutate(newRecipe, {
       onSuccess: () => {
-        // Redirection vers la page d'accueil après succès
+        reset();
         navigate('/');
       },
     });
   };
 
-  // Style conditionnel pour les champs avec erreurs
-  const inputStyle = (hasError) => ({
-    marginLeft: '10px',
-    marginBottom: '10px',
-    width: '300px',
-    border: hasError ? '2px solid red' : undefined,
-  });
-
   return (
     <div style={{ padding: '20px' }}>
       <h2>Ajouter une nouvelle recette</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label>
             Titre:
             <input
               type="text"
-              ref={titleRef}
-              style={inputStyle(errors.title)}
-              required
+              {...register('title')}
+              style={{ marginLeft: '10px', marginBottom: '10px', width: '300px', border: errors.title ? '2px solid red' : undefined }}
             />
           </label>
+          {errors.title && <p style={{ color: 'red' }}>{errors.title.message}</p>}
         </div>
         <div>
           <label>
             URL de l&apos;image:
             <input
               type="url"
-              ref={imageRef}
-              style={inputStyle(errors.image)}
-              required
+              {...register('image')}
+              style={{ marginLeft: '10px', marginBottom: '10px', width: '300px', border: errors.image ? '2px solid red' : undefined }}
             />
           </label>
+          {errors.image && <p style={{ color: 'red' }}>{errors.image.message}</p>}
         </div>
         <div>
-          <label>
-            Ajouter un ingrédient:
-            <input
-              type="text"
-              ref={ingredientInputRef}
-              style={{ marginLeft: '10px', width: '200px' }}
-            />
-            <button type="button" onClick={handleAddIngredient} style={{ marginLeft: '10px' }}>
-              Ajouter
-            </button>
-          </label>
-          {errors.ingredients && <p style={{ color: 'red' }}>Veuillez ajouter au moins un ingrédient.</p>}
-        </div>
-        <div>
-          <h3>Ingrédients ajoutés:</h3>
-          <ul>
-            {ingredients.map((ing, index) => (
-              <li key={index}>{ing}</li>
-            ))}
-          </ul>
+          <label>Ajouter des ingrédients:</label>
+          {fields.map((field, index) => (
+            <div key={field.id} style={{ marginBottom: '5px' }}>
+              <input
+                type="text"
+                {...register(`ingredients.${index}`)}
+                style={{ marginLeft: '10px', width: '200px', border: errors.ingredients && errors.ingredients[index] ? '2px solid red' : undefined }}
+              />
+              <button type="button" onClick={() => remove(index)} style={{ marginLeft: '10px' }}>
+                Supprimer
+              </button>
+            </div>
+          ))}
+          <button type="button" onClick={() => append('')} style={{ marginTop: '10px' }}>
+            Ajouter un ingrédient
+          </button>
+          {errors.ingredients && typeof errors.ingredients.message === 'string' && (
+            <p style={{ color: 'red' }}>{errors.ingredients.message}</p>
+          )}
         </div>
         <button type="submit" style={{ marginTop: '20px' }}>Ajouter la recette</button>
       </form>
